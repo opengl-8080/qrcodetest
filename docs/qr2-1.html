@@ -71,6 +71,9 @@
 
       <!-- キャンバス -->
       <canvas id="canvas" hidden></canvas>
+      <hr>
+      <h3>video</h3>
+      <video id="myVideo"></video>
     </div>
     <div id="output" hidden>
       <div id="outputMessage">QRコードが読み取れません。</div>
@@ -91,7 +94,8 @@
     
     <script>
      // DOM要素
-     const video = document.createElement("video");
+    //  const video = document.createElement("video");
+     const video = document.getElementById("myVideo");
      const canvasElement = document.getElementById("canvas");
      const canvas = canvasElement.getContext("2d");
      const loadingMessage = document.getElementById("loadingMessage");
