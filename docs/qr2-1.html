@@ -74,10 +74,6 @@
       <hr>
       <h3>video</h3>
       <video id="myVideo"></video>
-
-      <hr>
-      <h3>従来</h3>
-      <canvas id="canvas2" hidden></canvas>
     </div>
     <div id="output" hidden>
       <div id="outputMessage">QRコードが読み取れません。</div>
@@ -98,16 +94,10 @@
     
     <script>
      // DOM要素
-     // なんか動いた用
+    //  const video = document.createElement("video");
      const video = document.getElementById("myVideo");
      const canvasElement = document.getElementById("canvas");
      const canvas = canvasElement.getContext("2d");
-
-     // 従来用
-     const video2 = document.createElement("video");
-     const canvasElement2 = document.getElementById("canvas2");
-     const canvas2 = canvasElement2.getContext("2d");
-
      const loadingMessage = document.getElementById("loadingMessage");
      const outputContainer = document.getElementById("output");
      const outputMessage = document.getElementById("outputMessage");
@@ -138,11 +128,6 @@
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
        video.play();
        setTimeout(tick, delay);
-
-       video2.srcObject = stream;
-       video2.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-       video2.play();
-       setTimeout(tick2, delay);
      });
 
 
@@ -196,31 +181,6 @@
          }
        }
        setTimeout(tick, delayToNextTick);
-     }
-     
-     function tick2() {
-       let delayToNextTick = delay;
-       if (video2.readyState === video2.HAVE_ENOUGH_DATA) {
-         // 表示設定の変更
-         loadingMessage.hidden = true;
-         canvasElement2.hidden = false;
-         outputContainer.hidden = false;
-
-         canvasElement2.height = video2.videoHeight;
-         canvasElement2.width = video2.videoWidth;
-         canvas2.drawImage(video2, 0, 0, canvasElement2.width, canvasElement2.height);
-         var imageData = canvas2.getImageData(0, 0, canvasElement2.width, canvasElement2.height);
-         var code = jsQR(imageData.data, imageData.width, imageData.height);
-         if (code) {
-          //  // 四角い赤線で囲う
-          //  drawRectangle(code);
-          //  // 読み取ったQRコードをテーブルに追加
-          //  writeQrCode(code.data);
-
-           delayToNextTick += waitAfterRead;
-         }
-       }
-       setTimeout(tick2, delayToNextTick);
      }
     </script>
   </body>
