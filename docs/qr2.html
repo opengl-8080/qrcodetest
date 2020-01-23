@@ -170,6 +170,9 @@
          canvasElement.width = video.videoWidth;
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+         
+         console.debug(`(${imageData.data[614400]}, ${imageData.data[614401]}, ${imageData.data[614402]})`);
+
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
            const qrCodeData = code.data;
