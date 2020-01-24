@@ -102,7 +102,7 @@
      const tableBody = document.getElementById('tableBody');
      
      // 設定値
-     const delay = 50; // ビデオ読み取り間隔(ms)
+     const delay = 500; // ビデオ読み取り間隔(ms)
      const waitAfterRead = 1000; // QRコード読み取り後の待ち時間(ms)
 
      // 色
@@ -170,11 +170,10 @@
 
          canvasElement.height = video.videoHeight;
          canvasElement.width = video.videoWidth;
-        //  canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-         canvas.drawImage(video, 0, 0);
+         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`drawImage(video, 0, 0)`);
+         console.debug(`wait 500ms`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
