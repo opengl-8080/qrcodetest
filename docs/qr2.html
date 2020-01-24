@@ -73,7 +73,9 @@
       <canvas id="canvas" hidden></canvas>
 
       <div id="videoTarget">
-        <button id="loadButton">Load Video</button>
+        <label>
+          Use load() <input type="checkbox" id="useLoadCheckbox" />
+        </label>
         <button id="addVideoButton">Add Video</button>
         <button id="addDisplayNoneVideoButton">Add Video (display: none)</button>
         <button id="addZeroSizeVideoButton">Add Video (zero size)</button>
@@ -99,6 +101,7 @@
     <script>
      // DOM要素
      const video = document.createElement("video");
+     let useLoad = false;
 
      const canvasElement = document.getElementById("canvas");
      const canvas = canvasElement.getContext("2d");
@@ -108,9 +111,9 @@
      const table = document.getElementById('qrcodes');
      const tableBody = document.getElementById('tableBody');
      
-      document.getElementById("loadButton").addEventListener("click", () => {
-        video.load();
-        console.log("load!!!!!!!");
+      document.getElementById("useLoadCheckbox").addEventListener("click", () => {
+        useLoad = document.getElementById("useLoadCheckbox").checked;
+        console.log(`useLoad=${useLoad}`);
       });
      
       document.getElementById("addVideoButton").addEventListener("click", () => {
@@ -214,7 +217,7 @@
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`load?`);
+        //  console.debug(`load?`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
@@ -239,6 +242,11 @@
              drawRectangle(code, red);
            }
          }
+       }
+
+       if (useLoad) {
+         video.load();
+         console.log("load!");
        }
 
         setTimeout(tick, delayToNextTick);
