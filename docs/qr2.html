@@ -178,7 +178,7 @@
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`ended=${video.ended}, error=${video.error}, paused=${video.paused}`);
+         console.debug(`multiple drawImage()`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
