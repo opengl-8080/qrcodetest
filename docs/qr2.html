@@ -172,7 +172,7 @@
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`buffered.length=${video.buffered.length}, currentTime=${video.currentTime}, ended=${video.ended}, error=${video.error}, pause=${video.pause}, played=${video.played}`);
+         console.debug(`buffered.length=${video.buffered.length}, currentTime=${video.currentTime}, ended=${video.ended}, error=${video.error}, pause=${video.paused}, played=${video.played}`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
