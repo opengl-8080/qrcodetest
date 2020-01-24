@@ -75,6 +75,7 @@
       <div id="videoTarget">
         <button id="addVideoButton">Add Video</button>
         <button id="addDisplayNoneVideoButton">Add Video (display: none)</button>
+        <button id="addZeroSizeVideoButton">Add Video (zero size)</button>
       </div>
     </div>
     <div id="output" hidden>
@@ -122,6 +123,17 @@
 
         let span = document.createElement("span");
         span.innerText = "added display none video!!";
+        videoTarget.appendChild(span);
+      });
+
+      document.getElementById("addZeroSizeVideoButton").addEventListener("click", () => {
+        let videoTarget = document.getElementById("videoTarget");
+        video.width = "0px";
+        video.height = "0px";
+        videoTarget.appendChild(video);
+
+        let span = document.createElement("span");
+        span.innerText = "added zero size video!!";
         videoTarget.appendChild(span);
       });
 
