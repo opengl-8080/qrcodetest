@@ -102,7 +102,7 @@
      const tableBody = document.getElementById('tableBody');
      
      // 設定値
-     const delay = 500; // ビデオ読み取り間隔(ms)
+     const delay = 50; // ビデオ読み取り間隔(ms)
      const waitAfterRead = 1000; // QRコード読み取り後の待ち時間(ms)
 
      // 色
@@ -128,14 +128,19 @@
      }
 
      // カメラを動作させる
-     navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
-       video.srcObject = stream;
-       video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      //  video.onloadedmetadata = () => video.play(); // 関係なし
-       video.play();
-       setTimeout(tick, delay);
-     });
-
+    //  navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+    //    video.srcObject = stream;
+    //    video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+    //   //  video.onloadedmetadata = () => video.play(); // 関係なし
+    //    video.play();
+    //    setTimeout(tick, delay);
+    //  });
+    video.src = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    video.loop = true;
+    video.muted = true;
+    video.setAttribute("playsinline", true);
+    video.onloadedmetadata = () => video.play();
+    setTimeout(tick, delay);
 
      function drawRectangle(code, color) {
        drawLine(code.location.topLeftCorner, code.location.topRightCorner, color);
@@ -170,11 +175,10 @@
 
          canvasElement.height = video.videoHeight;
          canvasElement.width = video.videoWidth;
-         canvas.clearRect(0, 0, canvasElement.width, canvasElement.height);
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`clearRect()`);
+         console.debug(`download normal video`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
