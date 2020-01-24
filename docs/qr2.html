@@ -92,6 +92,15 @@
     <script>
      // DOM要素
      const video = document.createElement("video");
+      video.addEventListener("ended", () => console.debug("ended"));
+      video.addEventListener("emptied", () => console.debug("emptied"));
+      video.addEventListener("pause", () => console.debug("pause"));
+      video.addEventListener("play", () => console.debug("play"));
+      video.addEventListener("playing", () => console.debug("playing"));
+      video.addEventListener("suspend", () => console.debug("suspend"));
+      video.addEventListener("waiting", () => console.debug("waiting"));
+      video.addEventListener("timeupdate", () => console.debug("timeupdate"));
+
      const canvasElement = document.getElementById("canvas");
      const canvas = canvasElement.getContext("2d");
      const loadingMessage = document.getElementById("loadingMessage");
@@ -172,7 +181,7 @@
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`buffered.length=${video.buffered.length}, currentTime=${video.currentTime}, ended=${video.ended}, error=${video.error}, pause=${video.paused}, played=${video.played}`);
+         console.debug(`ended=${video.ended}, error=${video.error}, paused=${video.paused}`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
