@@ -168,6 +168,11 @@
      // データ
      const scanned = new Set();  // 読み取り済みQRコード
      
+     if (window.hasOwnProperty("MediaRecorder")) {
+       console.log("supported!!");
+     } else {
+       console.log("unsupported...");
+     }
 
      // 線を引く(QRコードを認識したとき用)
      function drawLine(begin, end, color) {
