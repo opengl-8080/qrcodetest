@@ -72,6 +72,7 @@
       <!-- キャンバス -->
       <canvas id="canvas" hidden></canvas>
 
+      <hr>
       <div id="videoTarget">
         <label>
           Use load() <input type="checkbox" id="useLoadCheckbox" />
@@ -80,6 +81,10 @@
         <button id="addDisplayNoneVideoButton">Add Video (display: none)</button>
         <button id="addZeroSizeVideoButton">Add Video (zero size)</button>
       </div>
+
+      <hr>
+      <h3>Caputure Video</h3>
+      <video id="captureVideo"></video>
     </div>
     <div id="output" hidden>
       <div id="outputMessage">QRコードが読み取れません。</div>
@@ -102,6 +107,8 @@
      // DOM要素
      const video = document.createElement("video");
      let useLoad = false;
+
+     const captureVideo = document.getElementById("captureVideo");
 
      const canvasElement = document.getElementById("canvas");
      const canvas = canvasElement.getContext("2d");
@@ -178,6 +185,11 @@
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
       //  video.onloadedmetadata = () => video.play(); // 関係なし
        video.play();
+
+       captureVideo.srcObject = video.captureStream();
+       captureVideo.setAttribute("playsinline", true);
+       captureVideo.play();
+
        setTimeout(tick, delay);
      });
 
@@ -217,7 +229,7 @@
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-        //  console.debug(`load?`);
+         console.debug(`capture`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
@@ -246,7 +258,6 @@
 
        if (useLoad) {
          video.load();
-         console.log("load!");
        }
 
         setTimeout(tick, delayToNextTick);
