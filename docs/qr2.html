@@ -128,6 +128,10 @@
 
      // カメラを動作させる
      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+      stream.onended = () => {
+        console.debug("stream ended!!");
+      };
+
        video.srcObject = stream;
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
        video.play();
@@ -171,7 +175,11 @@
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`readyState=${video.readyState}, (${imageData.data[614400]}, ${imageData.data[614401]}, ${imageData.data[614402]})`);
+         console.debug({
+           readyState: video.readyState,
+           tracks: video.srcObject.getVideoTracks(),
+           pixel: [imageData.data[614400], imageData.data[614401], imageData.data[614402], imageData.data[614403]]
+         });
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
