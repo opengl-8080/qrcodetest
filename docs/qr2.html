@@ -73,6 +73,7 @@
       <canvas id="canvas" hidden></canvas>
 
       <div id="videoTarget">
+        <button id="loadButton">Load Video</button>
         <button id="addVideoButton">Add Video</button>
         <button id="addDisplayNoneVideoButton">Add Video (display: none)</button>
         <button id="addZeroSizeVideoButton">Add Video (zero size)</button>
@@ -106,6 +107,11 @@
      const outputMessage = document.getElementById("outputMessage");
      const table = document.getElementById('qrcodes');
      const tableBody = document.getElementById('tableBody');
+     
+      document.getElementById("loadButton").addEventListener("click", () => {
+        video.load();
+        console.log("load!!!!!!!");
+      });
      
       document.getElementById("addVideoButton").addEventListener("click", () => {
         let videoTarget = document.getElementById("videoTarget");
@@ -168,10 +174,9 @@
        video.srcObject = stream;
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
       //  video.onloadedmetadata = () => video.play(); // 関係なし
-       video.play()
-        .then(() => setTimeout(tick, delay))
-        .catch(e => console.error({message: "play error", exception: e}));
-     }).catch(e => console.error({message: "stream error", exception: e}));
+       video.play();
+       setTimeout(tick, delay);
+     });
 
      function drawRectangle(code, color) {
        drawLine(code.location.topLeftCorner, code.location.topRightCorner, color);
@@ -209,7 +214,7 @@
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-        //  console.debug(`replay`);
+         console.debug(`load?`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
@@ -234,8 +239,6 @@
              drawRectangle(code, red);
            }
          }
-         video.load();
-         console.log("load!!");
        }
 
         setTimeout(tick, delayToNextTick);
