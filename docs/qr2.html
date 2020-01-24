@@ -168,9 +168,10 @@
        video.srcObject = stream;
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
       //  video.onloadedmetadata = () => video.play(); // 関係なし
-       video.play();
-       setTimeout(tick, delay);
-     });
+       video.play()
+        .then(() => setTimeout(tick, delay))
+        .catch(e => console.error({message: "play error", exception: e}));
+     }).catch(e => console.error({message: "stream error", exception: e}));
 
      function drawRectangle(code, color) {
        drawLine(code.location.topLeftCorner, code.location.topRightCorner, color);
@@ -208,7 +209,7 @@
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`pause and play`);
+         console.debug(`catch errors`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
@@ -235,8 +236,7 @@
          }
        }
 
-        video.pause();
-        video.play().then(() => setTimeout(tick, delayToNextTick));
+        setTimeout(tick, delayToNextTick);
      }
     </script>
   </body>
