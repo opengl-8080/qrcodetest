@@ -137,6 +137,7 @@
     //  });
     video.src = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
     video.loop = true;
+    video.crossOrigin = "anonymous";
     video.muted = true;
     video.setAttribute("playsinline", true);
     video.onloadedmetadata = () => video.play();
