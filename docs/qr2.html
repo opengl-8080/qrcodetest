@@ -92,6 +92,8 @@
     <script>
      // DOM要素
      const video = document.createElement("video");
+     video.width = "0px";
+     video.height = "0px";
      document.getElementById("camera").appendChild(video);
 
      const canvasElement = document.getElementById("canvas");
