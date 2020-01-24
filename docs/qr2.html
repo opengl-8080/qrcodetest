@@ -190,11 +190,6 @@
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
       //  video.onloadedmetadata = () => video.play(); // 関係なし
        video.play();
-
-       captureVideo.srcObject = video.captureStream();
-       captureVideo.setAttribute("playsinline", true);
-       captureVideo.play();
-
        setTimeout(tick, delay);
      });
 
@@ -234,7 +229,7 @@
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`capture`);
+        //  console.debug(`capture`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
