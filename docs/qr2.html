@@ -74,6 +74,7 @@
 
       <div id="videoTarget">
         <button id="addVideoButton">Add Video</button>
+        <button id="addDisplayNoneVideoButton">Add Video (display: none)</button>
       </div>
     </div>
     <div id="output" hidden>
@@ -106,7 +107,22 @@
      const tableBody = document.getElementById('tableBody');
      
       document.getElementById("addVideoButton").addEventListener("click", () => {
-        document.getElementById("videoTarget").appendChild(video);
+        let videoTarget = document.getElementById("videoTarget");
+        videoTarget.appendChild(video);
+
+        let span = document.createElement("span");
+        span.innerText = "added video!!";
+        videoTarget.appendChild(span);
+      });
+
+      document.getElementById("addDisplayNoneVideoButton").addEventListener("click", () => {
+        let videoTarget = document.getElementById("videoTarget");
+        video.style = "display: none;";
+        videoTarget.appendChild(video);
+
+        let span = document.createElement("span");
+        span.innerText = "added display none video!!";
+        videoTarget.appendChild(span);
       });
 
      // 設定値
