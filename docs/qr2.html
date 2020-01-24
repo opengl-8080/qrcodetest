@@ -92,14 +92,7 @@
     <script>
      // DOM要素
      const video = document.createElement("video");
-      video.addEventListener("ended", () => console.debug("ended"));
-      video.addEventListener("emptied", () => console.debug("emptied"));
-      video.addEventListener("pause", () => console.debug("pause"));
-      video.addEventListener("play", () => console.debug("play"));
-      video.addEventListener("playing", () => console.debug("playing"));
-      video.addEventListener("suspend", () => console.debug("suspend"));
-      video.addEventListener("waiting", () => console.debug("waiting"));
-      video.addEventListener("timeupdate", () => console.debug("timeupdate"));
+      video.addEventListener("timeupdate", (e) => console.dir(e));
 
      const canvasElement = document.getElementById("canvas");
      const canvas = canvasElement.getContext("2d");
