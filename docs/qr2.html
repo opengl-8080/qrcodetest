@@ -168,8 +168,6 @@
        video.srcObject = stream;
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
       //  video.onloadedmetadata = () => video.play(); // 関係なし
-    video.autoplay = true;
-    video.muted = true;
        video.play();
        setTimeout(tick, delay);
      });
@@ -236,7 +234,9 @@
            }
          }
        }
-       setTimeout(tick, delayToNextTick);
+
+        video.pause();
+        video.play().then(() => setTimeout(tick, delayToNextTick));
      }
     </script>
   </body>
