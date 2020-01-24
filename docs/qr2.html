@@ -170,15 +170,11 @@
 
          canvasElement.height = video.videoHeight;
          canvasElement.width = video.videoWidth;
-         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+        //  canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+         canvas.drawImage(video, 0, 0);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`multiple drawImage()`);
+         console.debug(`drawImage(video, 0, 0)`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
