@@ -92,6 +92,8 @@
     <script>
      // DOM要素
      const video = document.createElement("video");
+     const tmpCanvasElement = document.createElement("canvas");
+     const tmpCanvas = tmpCanvasElement.getContext("2d");
 
      const canvasElement = document.getElementById("canvas");
      const canvas = canvasElement.getContext("2d");
@@ -170,10 +172,11 @@
 
          canvasElement.height = video.videoHeight;
          canvasElement.width = video.videoWidth;
-         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+         tmpCanvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+         canvas.drawImage(tmpCanvas, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
          
-         console.debug(`wait 500ms`);
+         console.debug(`tmp canvas`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
