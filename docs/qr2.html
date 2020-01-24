@@ -70,8 +70,7 @@
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
-      <div id="canvasTarget"></div>
-      <!-- <canvas id="canvas" hidden></canvas> -->
+      <canvas id="canvas" hidden></canvas>
     </div>
     <div id="output" hidden>
       <div id="outputMessage">QRコードが読み取れません。</div>
@@ -93,11 +92,10 @@
     <script>
      // DOM要素
      const video = document.createElement("video");
+     document.getElementById("camera").appendChild(video);
 
-     const canvasTarget = document.getElementById("canvasTarget");
-    //  const canvasElement = document.createElement("canvas");
-    //  const canvas = canvasElement.getContext("2d");
-
+     const canvasElement = document.getElementById("canvas");
+     const canvas = canvasElement.getContext("2d");
      const loadingMessage = document.getElementById("loadingMessage");
      const outputContainer = document.getElementById("output");
      const outputMessage = document.getElementById("outputMessage");
@@ -166,10 +164,6 @@
        loadingMessage.innerText = "読み込んでいます..."
        let delayToNextTick = delay;
        if (video.readyState === video.HAVE_ENOUGH_DATA) {
-         canvasTarget.innerHTML = "";
-        const canvasElement = document.createElement("canvas");
-        canvasTarget.appendChild(canvasElement);
-        const canvas = canvasElement.getContext("2d");
          // 表示設定の変更
          loadingMessage.hidden = true;
          canvasElement.hidden = false;
@@ -185,26 +179,25 @@
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
            const qrCodeData = code.data;
-           console.log(`qrCodeData=${qrCodeData}`);
-          //  if (!scanned.has(qrCodeData)) {
-          //    // 読み取り済QRコードとして記憶
-          //    scanned.add(qrCodeData);
-          //    // 読み取ったQRコードをテーブルに追加
-          //    writeQrCode(qrCodeData);
-          //    // waitを入れる
-          //    delayToNextTick += waitAfterRead;
+           if (!scanned.has(qrCodeData)) {
+             // 読み取り済QRコードとして記憶
+             scanned.add(qrCodeData);
+             // 読み取ったQRコードをテーブルに追加
+             writeQrCode(qrCodeData);
+             // waitを入れる
+             delayToNextTick += waitAfterRead;
 
-          //    // 音を鳴らす
-          //    soundEffect.play();
+             // 音を鳴らす
+             soundEffect.play();
              
-          //    // 四角い線で囲う
-          //    drawRectangle(code, blue);
+             // 四角い線で囲う
+             drawRectangle(code, blue);
 
-          //  } else {
-          //    // 読み取り済みの場合
-          //    // 四角い線で囲う
-          //    drawRectangle(code, red);
-          //  }
+           } else {
+             // 読み取り済みの場合
+             // 四角い線で囲う
+             drawRectangle(code, red);
+           }
          }
        }
        setTimeout(tick, delayToNextTick);
