@@ -201,6 +201,8 @@
         fileReader.onloadend = () => {
           let byteArray = new Uint8Array(fileReader.result);
           console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
+          recorder.start();
+          setTimeout(() => recorder.stop(), 1000);
         };
         fileReader.readAsArrayBuffer(e.data);
       };
