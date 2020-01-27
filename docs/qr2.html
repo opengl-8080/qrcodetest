@@ -68,7 +68,7 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
-      <div>test RecordRTC.js</div>
+      <div>RecordRTC.js WhammyRecorder</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
@@ -193,15 +193,23 @@
       // //  video.onloadedmetadata = () => video.play(); // 関係なし
       //  video.play();
       //  setTimeout(tick, delay);
-      let recorder = new RecordRTCPromisesHandler(stream, {type: "video"});
-      recorder.startRecording();
+      
+      var recorder = new WhammyRecorder(stream);
+      recorder.record();
+      recorder.stop(function(blob) {
+          // video.src = URL.createObjectURL(blob);
+          console.log(blob);
+      });
 
-      const sleep = m => new Promise(r => setTimeout(r, m));
-      await sleep(3000);
+      // let recorder = new RecordRTCPromisesHandler(stream, {type: "video"});
+      // recorder.startRecording();
 
-      await recorder.stopRecording();
-      let blob = await recorder.getBlob();
-      console.log(blob);
+      // const sleep = m => new Promise(r => setTimeout(r, m));
+      // await sleep(3000);
+
+      // await recorder.stopRecording();
+      // let blob = await recorder.getBlob();
+      // console.log(blob);
      });
 
      function drawRectangle(code, color) {
