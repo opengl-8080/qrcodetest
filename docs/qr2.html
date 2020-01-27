@@ -207,10 +207,10 @@
       recorder.stop((blob) => {
         console.log("recorded!!");
         let fileReader = new FileReader();
-        fileReader.onloadend(() => {
+        fileReader.onloadend = () => {
           let byteArray = new Uint8Array(fileReader.result);
           console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
-        });
+        };
         fileReader.readAsArrayBuffer(blob);
       });
      });
