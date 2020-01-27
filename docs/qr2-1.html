@@ -91,6 +91,9 @@
     <script>
      // DOM要素
      const video = document.createElement("video");
+     video.width = 0;
+     video.height = 0;
+     document.body.appendChild(video);
 
      const canvasElement = document.getElementById("canvas");
      const canvas = canvasElement.getContext("2d");
