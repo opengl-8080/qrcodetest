@@ -194,21 +194,37 @@
       //  video.play();
       //  setTimeout(tick, delay);
 
-      let recorder = new MediaRecorder(stream);
-      recorder.ondataavailable = (e) => {
-        console.log("dataavailable");
-        let fileReader = new FileReader();
-        fileReader.onloadend = () => {
-          let byteArray = new Uint8Array(fileReader.result);
-          console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
-          recorder.start();
-          setTimeout(() => recorder.stop(), 1000);
-        };
-        fileReader.readAsArrayBuffer(e.data);
-      };
-      recorder.start();
+      // let recorder = new MediaRecorder(stream);
+      // recorder.ondataavailable = (e) => {
+      //   console.log("dataavailable");
+      //   let fileReader = new FileReader();
+      //   fileReader.onloadend = () => {
+      //     let byteArray = new Uint8Array(fileReader.result);
+      //     console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
+      //     recorder.start();
+      //     setTimeout(() => recorder.stop(), 1000);
+      //   };
+      //   fileReader.readAsArrayBuffer(e.data);
+      // };
+      // recorder.start();
 
-      setTimeout(() => recorder.stop(), 1000);
+      // setTimeout(() => recorder.stop(), 1000);
+      test(stream);
+
+      function test(stream) {
+        let recorder = new MediaRecorder(stream);
+        recorder.ondataavailable = (e) => {
+          let fileReader = new FileReader();
+          fileReader.onloadend = () => {
+            let byteArray = new Uint8Array(fileReader.result);
+            console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
+            test(stream);
+          };
+          fileReader.readAsArrayBuffer(e.data);
+        };
+        recorder.start();
+        setTimeout(() => recorder.stop(), 1000);
+      };
 
       // let recorder = new MediaStreamRecorder(stream);
       // recorder.record();
