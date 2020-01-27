@@ -68,11 +68,15 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
-      <div>MediaStreamRecorder</div>
+      <div>Record and show video</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
       <canvas id="canvas" hidden></canvas>
+
+      <hr>
+      <h3>Recorder Video</h3>
+      <video id="recorderVideo"></video>
 
       <hr>
       <div id="videoTarget">
@@ -188,7 +192,7 @@
 
      // カメラを動作させる
      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(async function(stream) {
-      console.log(`video(w, h) = (${video.width}, ${video.height})`);
+      console.log(`video(w, h) = (${video.videoWidth}, ${video.videoHeight})`);
 
        video.srcObject = stream;
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
@@ -199,9 +203,10 @@
       let recorder = new MediaStreamRecorder(stream);
       recorder.record();
       const sleep = m => new Promise(r => setTimeout(r, m));
-      await sleep(3000);
+      await sleep(5000);
       recorder.stop((data) => {
-        console.log(recorder.blob);
+        console.log("recorded!!");
+        document.getElementById("recorderVideo").src = URL.createObjectURL(blob);
       });
      });
 
