@@ -191,7 +191,7 @@
       recorder.ondataavailable = (e) => {
         console.log(e.data.length);
       };
-      recorder.start();
+      recorder.start(100);
 
        video.srcObject = stream;
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
