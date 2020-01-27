@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>jsQR Demo</title>
     <script src="https://cozmo.github.io/jsQR/jsQR.js"></script>
+    <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
     
     <style>
      body {
@@ -67,6 +68,7 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
+      <div>test RecordRTC.js</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
@@ -186,11 +188,20 @@
 
      // カメラを動作させる
      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
-       video.srcObject = stream;
-       video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      //  video.onloadedmetadata = () => video.play(); // 関係なし
-       video.play();
-       setTimeout(tick, delay);
+      //  video.srcObject = stream;
+      //  video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+      // //  video.onloadedmetadata = () => video.play(); // 関係なし
+      //  video.play();
+      //  setTimeout(tick, delay);
+      let recorder = new RecordRTCPromisesHandler(stream, {type: "video"});
+      recorder.startRecording();
+
+      const sleep = m => new Promise(r => setTimeout(r, m));
+      await sleep(3000);
+
+      await recorder.stopRecording();
+      let blob = await recorder.getBlob();
+      console.log(blob);
      });
 
      function drawRectangle(code, color) {
