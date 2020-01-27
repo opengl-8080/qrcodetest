@@ -210,6 +210,8 @@
         //  let recordedVideo = document.getElementById("recordedVideo");
         //  recordedVideo.srcObject = e.data;
         //  recordedVideo.play();
+        console.log(`dataavailable!!`);
+        console.log(e.data);
         let fr = new FileReader();
         fr.onloadend = () => {
           let b = new Uinit8Array(fr.result);
