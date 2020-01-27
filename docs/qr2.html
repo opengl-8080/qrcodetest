@@ -187,7 +187,7 @@
      }
 
      // カメラを動作させる
-     navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+     navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(async function(stream) {
       //  video.srcObject = stream;
       //  video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
       // //  video.onloadedmetadata = () => video.play(); // 関係なし
