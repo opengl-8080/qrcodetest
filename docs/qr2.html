@@ -192,8 +192,6 @@
 
      // カメラを動作させる
      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(async function(stream) {
-      console.log(`video(w, h) = (${video.videoWidth}, ${video.videoHeight})`);
-
        video.srcObject = stream;
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
       //  video.onloadedmetadata = () => video.play(); // 関係なし
@@ -205,7 +203,7 @@
       const sleep = m => new Promise(r => setTimeout(r, m));
       await sleep(5000);
       recorder.stop((blob) => {
-        console.log("recorded!!");
+        console.log(`recorded!! video(w, h) = (${video.videoWidth}, ${video.videoHeight})`);
         let fileReader = new FileReader();
         fileReader.onloadend = () => {
           let byteArray = new Uint8Array(fileReader.result);
