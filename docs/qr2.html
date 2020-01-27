@@ -217,7 +217,12 @@
           let fileReader = new FileReader();
           fileReader.onloadend = () => {
             let byteArray = new Uint8Array(fileReader.result);
-            console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
+            let middle = byteArray.length / 2;
+            let message = `byteArray.length=${byteArray.length}`;
+            for (let i=middle; i<middle+10; i++) {
+              message += ", " + byteArray[i];
+            }
+            console.log(message);
             test(stream);
           };
           fileReader.readAsArrayBuffer(e.data);
