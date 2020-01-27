@@ -206,9 +206,9 @@
        recorder = new MediaRecorder(stream);
        recorder.ondataavailable = e => {
          console.log("show video!!");
-         document.getElementById("recordedVideo").src = URL.createObjectURL(
-           new Blob([e.data], {type: 'video/webm'})
-         );
+         let recordedVideo = document.getElementById("recordedVideo");
+         recordedVideo.srcObject = e.data;
+         recordedVideo.play();
        };
        recorder.start();
       // let recorder = new MediaRecorder(stream);
