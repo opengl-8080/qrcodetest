@@ -224,7 +224,7 @@
             let byteImage = byteImageElement.getContext("2d");
             for (let i=0; i<b.length && i<WIDTH*HEIGHT; i++) {
               let pixel = b[i];
-              byteImage.fillStyle = (typeof pixel === "undefined") ? `rgb(${pixel}, ${pixel}, ${pixel})` : "#FF0000";
+              byteImage.fillStyle = (typeof pixel === "undefined") ? "#FF0000" : `rgb(${pixel}, ${pixel}, ${pixel})`;
               byteImage.fillRect(i%WIDTH, i/WIDTH, 1, 1);
             }
 
