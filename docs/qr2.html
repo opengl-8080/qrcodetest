@@ -198,13 +198,13 @@
 
      // カメラを動作させる
      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(async function(stream) {
-       video.srcObject = stream;
-       video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      //  video.onloadedmetadata = () => video.play(); // 関係なし
-       video.play();
-       setTimeout(tick, delay);
+      //  video.srcObject = stream;
+      //  video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+      // //  video.onloadedmetadata = () => video.play(); // 関係なし
+      //  video.play();
+      //  setTimeout(tick, delay);
 
-      let counter = 0;
+      let messageElement = document.getElementById("message");
        recorder = new MediaRecorder(stream);
        recorder.ondataavailable = e => {
         //  console.log("show video!!");
@@ -215,14 +215,23 @@
         fr.onloadend = () => {
           try {
             let b = new Uint8Array(fr.result);
-            document.getElementById("message").innerText = `available!? length=${b.length}, [0..11]=${b.slice(0, 12)}`;
+            messageElement.innerText = `available!? length=${b.length}, [0..11]=${b.slice(0, 12)}`;
+            
+            let recordedVideo = document.getElementById("recordedVideo");
+            recordedVideo.srcObject = e.data;
+            recordedVideo.play();
           } catch (ee) {
-            document.getElementById("message").innerText = `error!! ee=${ee}`;
+            messageElement.innerText = `error!! ee=${ee}`;
           }
         };
         fr.readAsArrayBuffer(e.data);
        };
-       recorder.start(1000);
+       recorder.start();
+       
+       setTimeout(() => {
+        messageElement.innerText = "stop recorder!";
+        recorder.stop();
+       }, 5000);
       // let recorder = new MediaRecorder(stream);
       // recorder.ondataavailable = (e) => {
       //   console.log("dataavailable");
