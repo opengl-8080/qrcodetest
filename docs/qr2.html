@@ -206,7 +206,7 @@
       await sleep(5000);
       recorder.stop((data) => {
         console.log("recorded!!");
-        document.getElementById("recorderVideo").src = URL.createObjectURL(blob);
+        document.getElementById("recorderVideo").src = URL.createObjectURL(data);
       });
      });
 
