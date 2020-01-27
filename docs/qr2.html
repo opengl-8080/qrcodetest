@@ -68,7 +68,7 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
-      <div>Piyo</div>
+      <div>Fizz</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
@@ -215,9 +215,12 @@
         document.getElementById("message").innerText = `dataavailable!? e.data=${e.data}, counter=${counter}`;
         let fr = new FileReader();
         fr.onloadend = () => {
-          document.getElementById("message").innerText = `onloadend!!`;
-          let b = new Uinit8Array(fr.result);
-          document.getElementById("message").innerText = `available!? length=${b.length}`;
+          try {
+            let b = new Uint8Array(fr.result);
+            document.getElementById("message").innerText = `available!? length=${b.length}`;
+          } catch (ee) {
+            document.getElementById("message").innerText = `error!! ee=${ee}`;
+          }
         };
         fr.readAsArrayBuffer(e.data);
        };
