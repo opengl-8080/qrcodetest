@@ -68,7 +68,7 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
-      <div>Fizz</div>
+      <div>buzz</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
@@ -218,7 +218,7 @@
             messageElement.innerText = `available!? length=${b.length}, [0..11]=${b.slice(0, 12)}`;
             
             let recordedVideo = document.getElementById("recordedVideo");
-            recordedVideo.srcObject = e.data;
+            recordedVideo.src = URL.createObjectURL(new Blob([e.data]));
             recordedVideo.play();
           } catch (ee) {
             messageElement.innerText = `error!! ee=${ee}`;
