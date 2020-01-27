@@ -74,6 +74,9 @@
       <!-- キャンバス -->
       <canvas id="canvas" hidden></canvas>
 
+      <button id="stopRecordButton">Stop Record</button>
+      <video id="recordedVideo"></video>
+
       <hr>
       <div id="videoTarget">
         <label>
@@ -155,6 +158,12 @@
         videoTarget.appendChild(span);
       });
 
+      let recorder;
+      document.getElementById("stopRecordButton").addEventListener("click", () => {
+        console.log("stop record!!");
+        recorder.stop();
+      });
+
      // 設定値
      const delay = 50; // ビデオ読み取り間隔(ms)
      const waitAfterRead = 1000; // QRコード読み取り後の待ち時間(ms)
@@ -194,6 +203,12 @@
        video.play();
        setTimeout(tick, delay);
 
+       recorder = new MediaRecorder(stream);
+       recorder.ondataavailable = e => {
+         console.log("show video!!");
+         document.getElementById("recordedVideo").src = URL.createObjectURL(new Blob([e.data]));
+       };
+       recorder.start();
       // let recorder = new MediaRecorder(stream);
       // recorder.ondataavailable = (e) => {
       //   console.log("dataavailable");
@@ -209,25 +224,25 @@
       // recorder.start();
 
       // setTimeout(() => recorder.stop(), 1000);
-      test(stream);
+      // test(stream);
 
-      function test(stream) {
-        let recorder = new MediaRecorder(stream);
-        recorder.ondataavailable = (e) => {
-          let fileReader = new FileReader();
-          fileReader.onloadend = () => {
-            let byteArray = new Uint8Array(fileReader.result);
-            let middle = byteArray.length / 2;
-            let message = `byteArray.length=${byteArray.length}, byteLength=${byteArray.byteLength}, byteOffset=${byteArray.byteOffset}`;
-            message += `, [0..11]=${byteArray.slice(0, 12)}`;
-            console.log(message);
-            test(stream);
-          };
-          fileReader.readAsArrayBuffer(e.data);
-        };
-        recorder.start();
-        setTimeout(() => recorder.stop(), 1000);
-      };
+      // function test(stream) {
+      //   let recorder = new MediaRecorder(stream);
+      //   recorder.ondataavailable = (e) => {
+      //     let fileReader = new FileReader();
+      //     fileReader.onloadend = () => {
+      //       let byteArray = new Uint8Array(fileReader.result);
+      //       let middle = byteArray.length / 2;
+      //       let message = `byteArray.length=${byteArray.length}, byteLength=${byteArray.byteLength}, byteOffset=${byteArray.byteOffset}`;
+      //       message += `, [0..11]=${byteArray.slice(0, 12)}`;
+      //       console.log(message);
+      //       test(stream);
+      //     };
+      //     fileReader.readAsArrayBuffer(e.data);
+      //   };
+      //   recorder.start();
+      //   setTimeout(() => recorder.stop(), 1000);
+      // };
 
       // let recorder = new MediaStreamRecorder(stream);
       // recorder.record();
