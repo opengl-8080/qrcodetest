@@ -197,16 +197,18 @@
 
      // カメラを動作させる
      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(async function(stream) {
-       video.srcObject = stream;
-       video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      //  video.onloadedmetadata = () => video.play(); // 関係なし
-       video.play();
-       setTimeout(tick, delay);
+      //  video.srcObject = stream;
+      //  video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+      // //  video.onloadedmetadata = () => video.play(); // 関係なし
+      //  video.play();
+      //  setTimeout(tick, delay);
 
        recorder = new MediaRecorder(stream);
        recorder.ondataavailable = e => {
          console.log("show video!!");
-         document.getElementById("recordedVideo").src = URL.createObjectURL(new Blob([e.data]));
+         document.getElementById("recordedVideo").src = URL.createObjectURL(
+           new Blob([e.data], {type: 'video/webm'})
+         );
        };
        recorder.start();
       // let recorder = new MediaRecorder(stream);
