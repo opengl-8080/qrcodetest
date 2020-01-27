@@ -75,6 +75,7 @@
       <canvas id="canvas" hidden></canvas>
 
       <button id="stopRecordButton">Stop Record</button>
+      <div id="message"></div>
       <video id="recordedVideo"></video>
 
       <hr>
@@ -205,12 +206,13 @@
 
        recorder = new MediaRecorder(stream);
        recorder.ondataavailable = e => {
-         console.log("show video!!");
-         let recordedVideo = document.getElementById("recordedVideo");
-         recordedVideo.srcObject = e.data;
-         recordedVideo.play();
+        //  console.log("show video!!");
+        //  let recordedVideo = document.getElementById("recordedVideo");
+        //  recordedVideo.srcObject = e.data;
+        //  recordedVideo.play();
+        document.getElementById("message").innerText = `available!! length=${e.data.length}`;
        };
-       recorder.start();
+       recorder.start(1000);
       // let recorder = new MediaRecorder(stream);
       // recorder.ondataavailable = (e) => {
       //   console.log("dataavailable");
