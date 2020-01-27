@@ -210,7 +210,12 @@
         //  let recordedVideo = document.getElementById("recordedVideo");
         //  recordedVideo.srcObject = e.data;
         //  recordedVideo.play();
-        document.getElementById("message").innerText = `available!! length=${e.data.length}`;
+        let fr = new FileReader();
+        fr.onloadend = () => {
+          let b = new Uinit8Array(fr.result);
+          document.getElementById("message").innerText = `available!! length=${b.length}`;
+        };
+        fr.readAsArrayBuffer();
        };
        recorder.start(1000);
       // let recorder = new MediaRecorder(stream);
