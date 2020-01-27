@@ -68,7 +68,7 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
-      <div>hoge</div>
+      <div>fuga</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
@@ -214,6 +214,7 @@
             recordedVideo.setAttribute("playsinline", true);
             recordedVideo.play();
 
+            messageElement.innerText = "rendering byte image...";
             let b = new Uint8Array(fr.result);
             let byteImageElement = document.getElementById("byteImage");
             const WIDTH = 500;
@@ -223,7 +224,7 @@
             let byteImage = byteImageElement.getContext("2d");
             for (let i=0; i<b.length && i<WIDTH*HEIGHT; i++) {
               let pixel = b[i];
-              byteImage.fillStyle = pixel ? `rgb(${pixel}, ${pixel}, ${pixel})` : "#FF0000";
+              byteImage.fillStyle = (typeof pixel === "undefined") ? `rgb(${pixel}, ${pixel}, ${pixel})` : "#FF0000";
               byteImage.fillRect(i%WIDTH, i/WIDTH, 1, 1);
             }
 
