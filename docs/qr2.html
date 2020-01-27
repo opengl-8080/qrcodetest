@@ -196,6 +196,7 @@
 
       let recorder = new MediaRecorder(stream);
       recorder.ondataavailable = (e) => {
+        console.log("dataavailable");
         let fileReader = new FileReader();
         fileReader.onloadend = () => {
           let byteArray = new Uint8Array(fileReader.result);
@@ -203,10 +204,7 @@
         };
         fileReader.readAsArrayBuffer(e.data);
       };
-      recorder.start();
-      setInterval(() => {
-        recorder.requestData();
-      }, 1000);
+      recorder.start(1000);
 
       // let recorder = new MediaStreamRecorder(stream);
       // recorder.record();
