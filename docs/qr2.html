@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>jsQR Demo</title>
     <script src="https://cozmo.github.io/jsQR/jsQR.js"></script>
-    <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
     
     <style>
      body {
@@ -68,16 +67,12 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
-      <div>buzz</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
       <canvas id="canvas" hidden></canvas>
 
-      <button id="stopRecordButton">Stop Record</button>
       <div id="message"></div>
-      <video id="recordedVideo"></video>
-      <canvas id="byteImage"></canvas>
 
       <hr>
       <div id="videoTarget">
@@ -160,12 +155,6 @@
         videoTarget.appendChild(span);
       });
 
-      let recorder;
-      document.getElementById("stopRecordButton").addEventListener("click", () => {
-        console.log("stop record!!");
-        recorder.stop();
-      });
-
      // 設定値
      const delay = 50; // ビデオ読み取り間隔(ms)
      const waitAfterRead = 1000; // QRコード読み取り後の待ち時間(ms)
@@ -199,98 +188,23 @@
        video.play();
        setTimeout(tick, delay);
 
-      let messageElement = document.getElementById("message");
-       recorder = new MediaRecorder(stream);
+       let messageElement = document.getElementById("message");
+       let recorder = new MediaRecorder(stream);
        recorder.ondataavailable = e => {
-         messageElement.innerText = `e.data.size = ${e.data.size} byte`;
-        //  console.log("show video!!");
-        //  let recordedVideo = document.getElementById("recordedVideo");
-        //  recordedVideo.srcObject = e.data;
-        //  recordedVideo.play();
-        // let fr = new FileReader();
-        // fr.onloadend = () => {
-        //   try {
-        //     // let recordedVideo = document.getElementById("recordedVideo");
-        //     // recordedVideo.src = URL.createObjectURL(new Blob([e.data]));
-        //     // recordedVideo.setAttribute("playsinline", true);
-        //     // recordedVideo.play();
-
-        //     // messageElement.innerText = "rendering byte image...";
-        //     let b = new Uint8Array(fr.result);
-        //     // let byteImageElement = document.getElementById("byteImage");
-        //     // const WIDTH = 500;
-        //     // const HEIGHT = 1000;
-        //     // byteImageElement.width = WIDTH;
-        //     // byteImageElement.height = HEIGHT;
-        //     // let byteImage = byteImageElement.getContext("2d");
-        //     // for (let i=0; i<b.length && i<WIDTH*HEIGHT; i++) {
-        //     //   let pixel = b[i];
-        //     //   byteImage.fillStyle = (typeof pixel === "undefined") ? "#FF0000" : `rgb(${pixel}, ${pixel}, ${pixel})`;
-        //     //   byteImage.fillRect(i%WIDTH, i/WIDTH, 1, 1);
-        //     // }
-
-        //     messageElement.innerText = `byteArray.length=${b.length}`;
-        //   } catch (ee) {
-        //     messageElement.innerText = `error!! ee=${ee}`;
-        //   }
-        // };
-        // fr.readAsArrayBuffer(e.data);
+         messageElement.innerText = `recorded data size = ${e.data.size} byte`;
        };
        recorder.start();
 
+       let counter = 0;
        messageElement.innerText = "start recorder";
-       setTimeout(() => {
-        messageElement.innerText = "stop recorder!";
-        recorder.stop();
-       }, 5000);
-      // let recorder = new MediaRecorder(stream);
-      // recorder.ondataavailable = (e) => {
-      //   console.log("dataavailable");
-      //   let fileReader = new FileReader();
-      //   fileReader.onloadend = () => {
-      //     let byteArray = new Uint8Array(fileReader.result);
-      //     console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
-      //     recorder.start();
-      //     setTimeout(() => recorder.stop(), 1000);
-      //   };
-      //   fileReader.readAsArrayBuffer(e.data);
-      // };
-      // recorder.start();
-
-      // setTimeout(() => recorder.stop(), 1000);
-      // test(stream);
-
-      // function test(stream) {
-      //   let recorder = new MediaRecorder(stream);
-      //   recorder.ondataavailable = (e) => {
-      //     let fileReader = new FileReader();
-      //     fileReader.onloadend = () => {
-      //       let byteArray = new Uint8Array(fileReader.result);
-      //       let middle = byteArray.length / 2;
-      //       let message = `byteArray.length=${byteArray.length}, byteLength=${byteArray.byteLength}, byteOffset=${byteArray.byteOffset}`;
-      //       message += `, [0..11]=${byteArray.slice(0, 12)}`;
-      //       console.log(message);
-      //       test(stream);
-      //     };
-      //     fileReader.readAsArrayBuffer(e.data);
-      //   };
-      //   recorder.start();
-      //   setTimeout(() => recorder.stop(), 1000);
-      // };
-
-      // let recorder = new MediaStreamRecorder(stream);
-      // recorder.record();
-      // const sleep = m => new Promise(r => setTimeout(r, m));
-      // await sleep(5000);
-      // recorder.stop((blob) => {
-      //   console.log(`recorded!! video(w, h) = (${video.videoWidth}, ${video.videoHeight})`);
-      //   let fileReader = new FileReader();
-      //   fileReader.onloadend = () => {
-      //     let byteArray = new Uint8Array(fileReader.result);
-      //     console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
-      //   };
-      //   fileReader.readAsArrayBuffer(blob);
-      // });
+       let key = setInterval(() => {
+        counter++;
+        messageElement.innerText = `recording... (${counter}s)`;
+        if (5 <= counter) {
+          recorder.stop();
+          clearInterval(key);
+        }
+       }, 1000);
      });
 
      function drawRectangle(code, color) {
@@ -312,7 +226,6 @@
 
        // 一番下にスクロール
        document.getElementById('output').scrollTo(0, 5400);
-
      }
      
      function tick() {
@@ -328,8 +241,6 @@
          canvasElement.width = video.videoWidth;
          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
          var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-         
-        //  console.debug(`capture`);
 
          var code = jsQR(imageData.data, imageData.width, imageData.height);
          if (code) {
