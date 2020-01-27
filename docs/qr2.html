@@ -68,7 +68,7 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
-      <div>Record and show video</div>
+      <div>Hoge</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
@@ -198,11 +198,11 @@
 
      // カメラを動作させる
      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(async function(stream) {
-      //  video.srcObject = stream;
-      //  video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      // //  video.onloadedmetadata = () => video.play(); // 関係なし
-      //  video.play();
-      //  setTimeout(tick, delay);
+       video.srcObject = stream;
+       video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+      //  video.onloadedmetadata = () => video.play(); // 関係なし
+       video.play();
+       setTimeout(tick, delay);
 
        recorder = new MediaRecorder(stream);
        recorder.ondataavailable = e => {
