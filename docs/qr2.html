@@ -68,7 +68,7 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
-      <div>buzz</div>
+      <div>foo</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
@@ -179,12 +179,6 @@
      
      // データ
      const scanned = new Set();  // 読み取り済みQRコード
-     
-     if (window.hasOwnProperty("MediaRecorder")) {
-       console.log("supported!!");
-     } else {
-       console.log("unsupported...");
-     }
 
      // 線を引く(QRコードを認識したとき用)
      function drawLine(begin, end, color) {
@@ -214,12 +208,12 @@
         let fr = new FileReader();
         fr.onloadend = () => {
           try {
-            let b = new Uint8Array(fr.result);
-            messageElement.innerText = `available!? length=${b.length}, [0..11]=${b.slice(0, 12)}`;
-            
             let recordedVideo = document.getElementById("recordedVideo");
             recordedVideo.src = URL.createObjectURL(new Blob([e.data]));
             recordedVideo.play();
+
+            let b = new Uint8Array(fr.result);
+            messageElement.innerText = `play recorded video. length=${b.length}, [0..11]=${b.slice(0, 12)}`;
           } catch (ee) {
             messageElement.innerText = `error!! ee=${ee}`;
           }
@@ -227,7 +221,8 @@
         fr.readAsArrayBuffer(e.data);
        };
        recorder.start();
-       
+
+       messageElement.innerText = "start recorder";
        setTimeout(() => {
         messageElement.innerText = "stop recorder!";
         recorder.stop();
