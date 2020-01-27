@@ -204,7 +204,9 @@
         };
         fileReader.readAsArrayBuffer(e.data);
       };
-      recorder.start(1000);
+      recorder.start();
+
+      setTimeout(() => recorder.stop(), 1000);
 
       // let recorder = new MediaStreamRecorder(stream);
       // recorder.record();
