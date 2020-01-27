@@ -191,7 +191,9 @@
        let messageElement = document.getElementById("message");
        let recorder = new MediaRecorder(stream);
        recorder.ondataavailable = e => {
-         messageElement.innerText = `recorded data size = ${e.data.size} byte`;
+         let bytes = e.data.size;
+         let mb = Math.floor((bytes / 1024 / 1024) * 100) / 100;
+         messageElement.innerText = `recorded data size = ${e.data.size} byte (${mb} mb)`;
        };
        recorder.start();
 
