@@ -68,7 +68,7 @@
   <body>
     <div id='camera'>
       <h1>QRコードリーダー2.0.10</h1>
-      <div>Hoge</div>
+      <div>Fuga</div>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
 
       <!-- キャンバス -->
@@ -210,8 +210,7 @@
         //  let recordedVideo = document.getElementById("recordedVideo");
         //  recordedVideo.srcObject = e.data;
         //  recordedVideo.play();
-        console.log(`dataavailable!!`);
-        console.log(e.data);
+        document.getElementById("message").innerText = `dataavailable!? e.data=${e.data}`;
         let fr = new FileReader();
         fr.onloadend = () => {
           let b = new Uinit8Array(fr.result);
