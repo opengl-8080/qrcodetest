@@ -72,21 +72,18 @@
       <!-- キャンバス -->
       <canvas id="canvas" hidden></canvas>
 
-      <div id="message"></div>
-
       <hr>
       <div id="videoTarget">
+        <div id="message"></div>
         <label>
-          Use load() <input type="checkbox" id="useLoadCheckbox" />
+          毎回 video.load() を実行する <input type="checkbox" id="useLoadCheckbox" />
         </label>
-        <button id="addVideoButton">Add Video</button>
-        <button id="addDisplayNoneVideoButton">Add Video (display: none)</button>
-        <button id="addZeroSizeVideoButton">Add Video (zero size)</button>
+        <button id="addVideoButton">video をそのまま出力</button>
+        <button id="addDisplayNoneVideoButton">video を display:none; で出力</button>
+        <button id="addZeroSizeVideoButton">video を width:0px; height:0px; で出力</button>
+        <div id="addVideoMessage"></div>
       </div>
 
-      <hr>
-      <h3>Caputure Video</h3>
-      <video id="captureVideo"></video>
     </div>
     <div id="output" hidden>
       <div id="outputMessage">QRコードが読み取れません。</div>
@@ -109,8 +106,8 @@
      // DOM要素
      const video = document.createElement("video");
      let useLoad = false;
-
-     const captureVideo = document.getElementById("captureVideo");
+     const videoTarget = document.getElementById("videoTarget");
+     const addVideoMessage = document.getElementById("addVideoMessage");
 
      const canvasElement = document.getElementById("canvas");
      const canvas = canvasElement.getContext("2d");
@@ -126,33 +123,23 @@
       });
      
       document.getElementById("addVideoButton").addEventListener("click", () => {
-        let videoTarget = document.getElementById("videoTarget");
         videoTarget.appendChild(video);
-
-        let span = document.createElement("span");
-        span.innerText = "added video!!";
-        videoTarget.appendChild(span);
+        addVideoMessage.innerText = "video をそのまま HTML に出力しました";
       });
 
       document.getElementById("addDisplayNoneVideoButton").addEventListener("click", () => {
-        let videoTarget = document.getElementById("videoTarget");
         video.style = "display: none;";
         videoTarget.appendChild(video);
 
-        let span = document.createElement("span");
-        span.innerText = "added display none video!!";
-        videoTarget.appendChild(span);
+        addVideoMessage.innerText = "video を display:none; にして HTML に出力しました";
       });
 
       document.getElementById("addZeroSizeVideoButton").addEventListener("click", () => {
-        let videoTarget = document.getElementById("videoTarget");
         video.width = "0px";
         video.height = "0px";
         videoTarget.appendChild(video);
 
-        let span = document.createElement("span");
-        span.innerText = "added zero size video!!";
-        videoTarget.appendChild(span);
+        addVideoMessage.innerText = "video を width:0px; height:0px; にして HTML に出力しました";
       });
 
      // 設定値
@@ -184,29 +171,34 @@
      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(async function(stream) {
        video.srcObject = stream;
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      //  video.onloadedmetadata = () => video.play(); // 関係なし
        video.play();
        setTimeout(tick, delay);
 
+       // 5秒間 MediaRecorder で stream の内容を記録して、バイトサイズを表示
+       // ※設定→Safari→詳細→Experimental Features→MediaRecorder を有効にする必要あり
        let messageElement = document.getElementById("message");
-       let recorder = new MediaRecorder(stream);
-       recorder.ondataavailable = e => {
-         let bytes = e.data.size;
-         let mb = Math.floor((bytes / 1024 / 1024) * 100) / 100;
-         messageElement.innerText = `recorded data size = ${e.data.size} byte (${mb} mb)`;
-       };
-       recorder.start();
+       if (typeof MediaRecorder === "undefined") {
+        messageElement.innerText = "MediaRecorder が有効になっていません。設定→Safari→詳細→Experimental Features で MediaRecorder を有効に切り替えてください";
+       } else {
+        let recorder = new MediaRecorder(stream);
+        recorder.ondataavailable = e => {
+          let bytes = e.data.size;
+          let mb = Math.floor((bytes / 1024 / 1024) * 100) / 100;
+          messageElement.innerText = `recorded data size = ${e.data.size} byte (${mb} mb)`;
+        };
+        recorder.start();
 
-       let counter = 0;
-       messageElement.innerText = "start recorder!";
-       let key = setInterval(() => {
-        counter++;
-        messageElement.innerText = `recording... (${counter}s)`;
-        if (5 <= counter) {
-          recorder.stop();
-          clearInterval(key);
-        }
-       }, 1000);
+        let counter = 0;
+        messageElement.innerText = "start recorder";
+        let key = setInterval(() => {
+          counter++;
+          messageElement.innerText = `recording... (${counter}s)`;
+          if (5 <= counter) {
+            recorder.stop();
+            clearInterval(key);
+          }
+        }, 1000);
+       }
      });
 
      function drawRectangle(code, color) {
