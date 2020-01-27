@@ -218,10 +218,10 @@
           fileReader.onloadend = () => {
             let byteArray = new Uint8Array(fileReader.result);
             let middle = byteArray.length / 2;
-            let message = `byteArray.length=${byteArray.length}`;
-            for (let i=middle; i<middle+10; i++) {
-              message += ", " + byteArray[i];
-            }
+            let message = `byteArray.length=${byteArray.length}, byteArray=${byteArray}`;
+            // for (let i=middle; i<middle+10; i++) {
+            //   message += ", " + byteArray[i];
+            // }
             console.log(message);
             test(stream);
           };
