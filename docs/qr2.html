@@ -75,10 +75,6 @@
       <canvas id="canvas" hidden></canvas>
 
       <hr>
-      <h3>Recorder Video</h3>
-      <video id="recorderVideo"></video>
-
-      <hr>
       <div id="videoTarget">
         <label>
           Use load() <input type="checkbox" id="useLoadCheckbox" />
@@ -198,19 +194,33 @@
        video.play();
        setTimeout(tick, delay);
 
-      let recorder = new MediaStreamRecorder(stream);
-      recorder.record();
-      const sleep = m => new Promise(r => setTimeout(r, m));
-      await sleep(5000);
-      recorder.stop((blob) => {
-        console.log(`recorded!! video(w, h) = (${video.videoWidth}, ${video.videoHeight})`);
+      let recorder = new MediaRecorder(stream);
+      recorder.ondataavailable = (e) => {
         let fileReader = new FileReader();
         fileReader.onloadend = () => {
           let byteArray = new Uint8Array(fileReader.result);
           console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
         };
-        fileReader.readAsArrayBuffer(blob);
-      });
+        fileReader.readAsArrayBuffer(e.data);
+      };
+      recorder.start();
+      setInterval(() => {
+        recorder.requestData();
+      }, 1000);
+
+      // let recorder = new MediaStreamRecorder(stream);
+      // recorder.record();
+      // const sleep = m => new Promise(r => setTimeout(r, m));
+      // await sleep(5000);
+      // recorder.stop((blob) => {
+      //   console.log(`recorded!! video(w, h) = (${video.videoWidth}, ${video.videoHeight})`);
+      //   let fileReader = new FileReader();
+      //   fileReader.onloadend = () => {
+      //     let byteArray = new Uint8Array(fileReader.result);
+      //     console.log(`byteArray.length=${byteArray.length}, (${byteArray[0]}, ${byteArray[1]}, ${byteArray[2]}, ${byteArray[3]})`);
+      //   };
+      //   fileReader.readAsArrayBuffer(blob);
+      // });
      });
 
      function drawRectangle(code, color) {
