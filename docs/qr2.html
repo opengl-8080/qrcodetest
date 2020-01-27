@@ -213,9 +213,9 @@
         let fr = new FileReader();
         fr.onloadend = () => {
           let b = new Uinit8Array(fr.result);
-          document.getElementById("message").innerText = `available!! length=${b.length}`;
+          document.getElementById("message").innerText = `available!? length=${b.length}`;
         };
-        fr.readAsArrayBuffer();
+        fr.readAsArrayBuffer(e.data);
        };
        recorder.start(1000);
       // let recorder = new MediaRecorder(stream);
