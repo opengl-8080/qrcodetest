@@ -68,6 +68,8 @@
     <div id='camera'>
       <h1>QRコードリーダー2.0.8(重複チェックなし)</h1>
       <div id="loadingMessage">ビデオが有効になっていません。</div>
+
+      <canvas id="canvas" hidden></canvas>
     </div>
     <div id="output" hidden>
       <div id="outputMessage">QRコードが読み取れません。</div>
@@ -120,7 +122,6 @@
      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
        video.srcObject = stream;
        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      //  video.onloadedmetadata = () => video.play(); // 関係なし
        video.play();
        setTimeout(tick, delay);
      });
